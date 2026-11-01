@@ -13,8 +13,8 @@
   h1 { color: var(--gold); text-align: center; font-size: 1.5em; margin-bottom: 20px; }
   
   /* Tabs */
-  .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-  .tab { flex: 1; padding: 10px; text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: #888; font-weight: bold; font-size: 0.85em; }
+  .tabs { display: flex; gap: 5px; margin-bottom: 20px; }
+  .tab { flex: 1; padding: 10px 2px; text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: #888; font-weight: bold; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.5px; }
   .tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
   
   .section { display: none; }
@@ -40,8 +40,11 @@
   .lex-notes { font-size: 0.85em; color: #7fdbff; background: #0a1428; padding: 10px; border-left: 3px solid var(--cyan); border-radius: 4px; }
   .lex-register { font-size: 0.75em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; display: block; }
 
-  .notes { font-size: 0.85em; color: #aaa; margin-top: 15px; }
-  .notes ul { padding-left: 20px; margin-top: 5px; }
+  /* Library Styles */
+  .lib-item { background: #000; border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+  .lib-title { color: var(--gold); font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
+  .lib-type { font-size: 0.75em; color: var(--cyan); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px;}
+  .lib-desc { font-size: 0.9em; color: #ccc; }
 </style>
 </head>
 <body>
@@ -53,6 +56,7 @@
     <div class="tab active" onclick="switchTab('measure')">Measure</div>
     <div class="tab" onclick="switchTab('time')">Time</div>
     <div class="tab" onclick="switchTab('lexicon')">Lexicon</div>
+    <div class="tab" onclick="switchTab('library')">Library</div>
   </div>
 
   <!-- MEASUREMENT ENGINE -->
@@ -118,6 +122,57 @@
       <input type="text" id="lexSearch" placeholder="Search by word, Strong's, or ID..." oninput="renderLexicon()">
     </div>
     <div id="lexiconList"></div>
+  </div>
+
+  <!-- LIBRARY -->
+  <div id="library" class="section">
+    <div class="card">
+      <h2>Source Library</h2>
+      <p style="font-size: 0.9em; color: #aaa; margin-bottom: 15px;">The primary texts used to verify the Floor and the Architecture.</p>
+      
+      <div class="lib-item">
+        <div class="lib-title">New World Translation of the Holy Scriptures (1983)</div>
+        <span class="lib-type">Primary Text</span>
+        <div class="lib-desc">The default translation for all scriptural citations and the foundational authority for the Ophan Tutor.</div>
+      </div>
+
+      <div class="lib-item">
+        <div class="lib-title">Insight on the Scriptures (Volumes 1 & 2)</div>
+        <span class="lib-type">Watchtower Publication</span>
+        <div class="lib-desc">Used for deep lexical, historical, and theological verification. The source for the Hebrew Lexicon entries and the 24 elders / 144,000 administrative structure.</div>
+      </div>
+
+      <div class="lib-item">
+        <div class="lib-title">Theocratic Ministry School Guidebook</div>
+        <span class="lib-type">Watchtower Publication</span>
+        <div class="lib-desc">The source for the teaching methodology. Instructs the speaker to use plain language, avoid haughtiness, and adapt to the audience.</div>
+      </div>
+
+      <div class="lib-item">
+        <div class="lib-title">Learn From the Great Teacher</div>
+        <span class="lib-type">Watchtower Publication</span>
+        <div class="lib-desc">The source for the conversational entry protocol. Demonstrates how Jesus used simple illustrations and parables to explain deep truths.</div>
+      </div>
+
+      <div class="lib-item">
+        <div class="lib-title">Life—How Did It Get Here? By Evolution or by Creation?</div>
+        <span class="lib-type">Watchtower Publication</span>
+        <div class="lib-desc">The source for the scientific and design arguments. Used when building the Physical Constants Engine (the 864/432 relationship).</div>
+      </div>
+
+      <div class="lib-item">
+        <div class="lib-title">Revelation—Its Grand Climax At Hand!</div>
+        <span class="lib-type">Watchtower Publication</span>
+        <div class="lib-desc">The source for the 24 elders = 144,000 identification, the 24 divisions of 6,000, and the interpretation of the heavenly throne room.</div>
+      </div>
+
+      <div class="lib-item">
+        <div class="lib-title">Strong's Exhaustive Concordance</div>
+        <span class="lib-type">Reference Tool</span>
+        <div class="lib-desc">Used for the Hebrew/Greek word numbers (H4060, H4150, H520, etc.) and the foundational lexical definitions in the Lexicon tab.</div>
+      </div>
+      
+    </div>
   </div>
 
 </div>
