@@ -1,150 +1,163 @@
-{
-  "source_file": "hebrew-lexicon",
-  "status": "Tier 1 Fact",
-  "records": {
-    "HEB-S001": {
-      "id": "HEB-S001",
-      "source": "Psalm 39:5; Exodus 26:2 (BHS)",
-      "extract": "Hebrew: Middah (H4060). Physical context: the measured dimensions of the Tabernacle curtains (Exod 26:2). Temporal context: 'מִדַּת יָמַי' — 'the measure of my days' (Ps 39:5).",
-      "grade": "G3",
-      "register": "Fact",
-      "notes": "The same noun for architectural dimension is used explicitly for the span of a human life. BDB confirms 'once of time' at Ps 39:5."
-    },
-    "HEB-S002": {
-      "id": "HEB-S002",
-      "source": "Exodus 28:43; Leviticus 23:2 (BHS)",
-      "extract": "Hebrew: Moed (H4150). Physical context: 'Ohel Moed' — the Tent of Meeting, a fixed place (Exod 28:43). Temporal context: 'appointed times' of the LORD (Lev 23:2).",
-      "grade": "G3",
-      "register": "Fact",
-      "notes": "Vine's notes the word carries both 'fixed time' and 'fixed place' with 'meeting' as the common denominator. The same root governs the spatial Tabernacle and the temporal feasts."
-    },
-    "HEB-S003": {
-      "id": "HEB-S003",
-      "source": "2 Kings 21:13; Job 38:5 (BHS)",
-      "extract": "Hebrew: Qav (H6957). Physical context: a measuring line stretched over Jerusalem or the earth's foundations.",
-      "grade": "G2",
-      "register": "Fact",
-      "notes": "A standard architectural surveying term. No explicit temporal usage was isolated in this pass; logged as part of the measurement lexicon."
-    },
-    "HEB-S004": {
-      "id": "HEB-S004",
-      "source": "Ezekiel 40:1-3 (BHS)",
-      "extract": "Hebrew: Yovel (H3104) alongside Keneh ha-Middah (H4060). The vision begins 'in the Jubilee' and the prophet is given a 'measuring rod'.",
-      "grade": "G3",
-      "register": "Fact",
-      "notes": "The 50-year time cycle (Yovel) and the architectural measuring instrument (middah) appear in the same introductory verse, linking the temporal release-cycle to the act of spatial measurement."
-    },
-    "HEB-S005": {
-      "id": "HEB-S005",
-      "source": "NIV Exhaustive Concordance, H520",
-      "extract": "Hebrew: Amah (H520). Standard meaning: cubit, a linear measure. Lexicon adds: 'an unspecified unit of time'.",
-      "grade": "G3",
-      "register": "Fact",
-      "notes": "The cubit, the basic building block of Tabernacle and Temple dimensions, is lexically attested as a unit of time in at least one occurrence."
-    },
-    "HEB-S006": {
-      "id": "HEB-S006",
-      "source": "Strong's H8138/H8141",
-      "extract": "Hebrew: Shana. Root meaning 'to change, repeat'; noun: 'a year (as a revolution of time)'.",
-      "grade": "G3",
-      "register": "Fact",
-      "notes": "The year is defined lexically as a 'revolution' — a cyclical, wheel-like return. This supplies the conceptual bridge between the physical wheel (ophan/galgal) and temporal cycles."
-    },
-    "HEB-S007": {
-      "id": "HEB-S007",
-      "source": "Ezekiel 1:16; 10:13 (BHS)",
-      "extract": "Hebrew: Ophan (H212) and Galgal (H1534). The wheels of the cherubim chariot, driven by the Spirit.",
-      "grade": "G3",
-      "register": "Fact",
-      "notes": "The wheel is the explicit mechanism of the divine mobile throne. Its rotational motion provides the structural analogue for cyclical time (shana as 'revolution'). The text does not state a 5,880-year span; it supplies the wheel-image."
-    },
-    "HEB-S008": {
-      "id": "HEB-S008",
-      "source": "Isaiah 40:22 (BHS)",
-      "extract": "Hebrew: Chug (H2328). 'He sits enthroned above the circle of the earth.'",
-      "grade": "G2",
-      "register": "Fact",
-      "notes": "A spatial/circular term. No temporal predicate is attached in the immediate verse. Logged as part of the 'circle/wheel' lexical domain."
-    },
-    "HEB-S009": {
-      "id": "HEB-S009",
-      "source": "Exodus 25:9; 40:34-38 (BHS)",
-      "extract": "Hebrew: Mishkan (H4908). The physical 'dwelling place' constructed by Israel.",
-      "grade": "G2",
-      "register": "Fact",
-      "notes": "The primary architectural noun for the Tabernacle structure. The protocol's hypothesis requires noting that the physical dwelling (mishkan) is distinct from, though coordinated with, the appointed time (moed)."
-    },
-    "HEB-S010": {
-      "id": "HEB-S010",
-      "source": "1 Kings 6:1; Ezra 3:10-11 (BHS)",
-      "extract": "Hebrew: Yasad (H3245). 'To lay a foundation' of the Temple.",
-      "grade": "G2",
-      "register": "Fact",
-      "notes": "A foundation-laying verb used for the physical house of God. The temporal 'founding' or establishment of a period is not explicitly predicated with this verb in the isolated passages, but the semantic domain of 'laying a fixed base' is present."
-    },
-    "HEB-S011": {
-      "id": "HEB-S011",
-      "source": "Genesis 6:15 (BHS)",
-      "extract": "Hebrew: Amah (H520). Physical context: the Ark's dimensions — 300 cubits long, 50 cubits wide, 30 cubits high.",
-      "grade": "G1",
-      "register": "Fact",
-      "notes": "G1: Building/measurement term present; no explicit temporal predicate in this verse. Temporal duality of amah is established separately in HEB-S005."
-    },
-    "HEB-S012": {
-      "id": "HEB-S012",
-      "source": "Genesis 6:16 (BHS)",
-      "extract": "Hebrew: Tachtiyyim, Sheniyyim, Shelishiyyim (lower, second, third decks). Three-tiered internal elevation.",
-      "grade": "G4",
-      "register": "Interpretation",
-      "notes": "G4: The three-deck structure is interpreted as mirroring the three nested zones of later Tabernacle/Temple architecture. The text itself does not draw this connection."
-    },
-    "HEB-S013": {
-      "id": "HEB-S013",
-      "source": "Genesis 6:16 (BHS)",
-      "extract": "Hebrew: Tzohar (H6672) — light opening/window, finished to a cubit (Amah).",
-      "grade": "G1",
-      "register": "Fact",
-      "notes": "G1: Architectural feature with linear measurement; no temporal predicate."
-    },
-    "HEB-S014": {
-      "id": "HEB-S014",
-      "source": "Genesis 11:3 (BHS)",
-      "extract": "Hebrew: Levenim (H3843, bricks) substituted for Even (H68, stone); Chemar (H2564, asphalt) substituted for Chomer (H2563, mortar).",
-      "grade": "G1",
-      "register": "Fact",
-      "notes": "G1: Building-material terminology. No temporal predicate. Logged as part of the architectural lexicon."
-    },
-    "HEB-S015": {
-      "id": "HEB-S015",
-      "source": "Genesis 11:4 (BHS)",
-      "extract": "Hebrew: Migdal (H4026, tower), Rosh (H7218, top/head), Shamayim (H8064, heavens). A city and tower with its top in the heavens.",
-      "grade": "G4",
-      "register": "Interpretation",
-      "notes": "G4: Interpreted as a humanly constructed spatial axis connecting earth to the cosmic realm, intended to secure a central identity (Shem). The text does not explicitly assign a temporal function."
-    },
-    "HEB-S016": {
-      "id": "HEB-S016",
-      "source": "Genesis 1:14 (BHS)",
-      "extract": "Hebrew: Mo'adim (H4150). The celestial bodies are appointed 'for signs and for seasons [mo'adim]'.",
-      "grade": "G3",
-      "register": "Fact",
-      "notes": "G3: Explicit temporal use of moed. The same root governs the spatial 'Ohel Moed' (Tent of Meeting) in HEB-S002, establishing a cross-text lexical dual of time and place."
-    },
-    "HEB-S017": {
-      "id": "HEB-S017",
-      "source": "Genesis 1:6-8 (BHS)",
-      "extract": "Hebrew: Raqia (H7549). The expanse/vault separating the waters below from the waters above.",
-      "grade": "G1",
-      "register": "Fact",
-      "notes": "G1: Structural/spatial term for the created vault. No temporal predicate in the immediate context."
-    },
-    "HEB-S018": {
-      "id": "HEB-S018",
-      "source": "Genesis 2:1-3; Exodus 40:33 (BHS)",
-      "extract": "Hebrew: Kalah (H3615) and Melakah (H4399) — verbs/nouns of completion. Creation is 'finished' (Gen 2:1-2); Moses 'finished' the work of the Mishkan (Exod 40:33).",
-      "grade": "G4",
-      "register": "Interpretation",
-      "notes": "G4: The verbal parallel between the completion of creation and the completion of the Tabernacle is interpreted as framing creation as a temple-building account. The text does not explicitly equate the two events."
-    }
-  }
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Source Book — Ophan Tutor, Book I</title>
+<style>
+  :root { --bg:#050914; --card:#0a1428; --text:#e8f4f8; --gold:#d4af37; --cyan:#7fdbff; --border:#1a3350; }
+  body { font-family: Georgia, serif; background: var(--bg); color: var(--text); margin:0; padding:20px; line-height:1.65; }
+  .container { max-width: 720px; margin:auto; }
+  h1 { color: var(--gold); text-align:center; font-size:1.7em; letter-spacing:1px; border-bottom:2px solid var(--gold); padding-bottom:12px; margin-bottom:4px; }
+  .subtitle { text-align:center; color:var(--cyan); font-style:italic; font-size:0.9em; margin-bottom:6px; }
+  .stamp { text-align:center; color:#557; font-size:0.7em; font-family:monospace; letter-spacing:1px; margin-bottom:30px; }
+  h2 { color: var(--gold); font-size:1.15em; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); padding-bottom:6px; margin-top:40px; }
+  h3 { color: var(--cyan); font-size:1em; margin-bottom:4px; }
+  .part { text-align:center; color:var(--gold); font-size:0.8em; letter-spacing:3px; text-transform:uppercase; margin:34px 0 10px; }
+  .lib-item { background: var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:6px; padding:16px; margin-bottom:14px; }
+  .lib-title { color: var(--gold); font-weight:bold; font-size:1.05em; margin-bottom:4px; }
+  .lib-type { font-size:0.7em; color:var(--cyan); text-transform:uppercase; letter-spacing:1.5px; display:block; margin-bottom:8px; }
+  .lib-desc { font-size:0.9em; color:#ccc; }
+  .app { background: var(--card); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:6px; padding:16px; margin-bottom:18px; }
+  .app-tag { font-family:monospace; font-size:0.68em; color:var(--gold); background:#1a3350; padding:2px 7px; border-radius:4px; letter-spacing:1px; }
+  table { width:100%; border-collapse:collapse; margin-top:10px; font-size:0.78em; }
+  th, td { border:1px solid var(--border); padding:6px; text-align:left; vertical-align:top; }
+  th { background:#0d1e38; color:var(--cyan); font-size:0.95em; }
+  ul { padding-left:20px; } li { margin-bottom:7px; font-size:0.92em; }
+  .commission { border:1px solid var(--cyan); background:#000; border-radius:6px; padding:16px; margin-top:40px; text-align:center; font-size:0.9em; }
+  .resolved { font-size:0.84em; color:var(--cyan); margin-bottom:0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>The Source Book</h1>
+  <div class="subtitle">Ophan Tutor — Book I, Single Volume with Appendix</div>
+  <div class="stamp">BUILD SB-1.1 · PART I UNALTERED · APPENDIX APPENDED · JUBILEE RESOLVED</div>
+
+  <div class="part">Part I — The Seven Sources</div>
+  <p style="font-size:0.85em; color:#888; font-style:italic;">Reproduced without alteration from the Source Library register. No entry has been edited, merged, reordered, or abridged.</p>
+
+  <div class="lib-item">
+    <div class="lib-title">New World Translation of the Holy Scriptures (1983)</div>
+    <span class="lib-type">Primary Text</span>
+    <div class="lib-desc">The default translation for all scriptural citations and the foundational authority for the Ophan Tutor.</div>
+  </div>
+
+  <div class="lib-item">
+    <div class="lib-title">Insight on the Scriptures (Volumes 1 &amp; 2)</div>
+    <span class="lib-type">Watchtower Publication</span>
+    <div class="lib-desc">Used for deep lexical, historical, and theological verification. The source for the Hebrew Lexicon entries and the 24 elders / 144,000 administrative structure.</div>
+  </div>
+
+  <div class="lib-item">
+    <div class="lib-title">Theocratic Ministry School Guidebook</div>
+    <span class="lib-type">Watchtower Publication</span>
+    <div class="lib-desc">The source for the teaching methodology. Instructs the speaker to use plain language, avoid haughtiness, and adapt to the audience.</div>
+  </div>
+
+  <div class="lib-item">
+    <div class="lib-title">Learn From the Great Teacher</div>
+    <span class="lib-type">Watchtower Publication</span>
+    <div class="lib-desc">The source for the conversational entry protocol. Demonstrates how Jesus used simple illustrations and parables to explain deep truths.</div>
+  </div>
+
+  <div class="lib-item">
+    <div class="lib-title">Life—How Did It Get Here? By Evolution or by Creation?</div>
+    <span class="lib-type">Watchtower Publication</span>
+    <div class="lib-desc">The source for the scientific and design arguments. Used when building the Physical Constants Engine (the 864/432 relationship).</div>
+  </div>
+
+  <div class="lib-item">
+    <div class="lib-title">Revelation—Its Grand Climax At Hand!</div>
+    <span class="lib-type">Watchtower Publication</span>
+    <div class="lib-desc">The source for the 24 elders = 144,000 identification, the 24 divisions of 6,000, and the interpretation of the heavenly throne room.</div>
+  </div>
+
+  <div class="lib-item">
+    <div class="lib-title">Strong's Exhaustive Concordance</div>
+    <span class="lib-type">Reference Tool</span>
+    <div class="lib-desc">Used for the Hebrew/Greek word numbers (H4060, H4150, H520, etc.) and the foundational lexical definitions in the Lexicon tab.</div>
+  </div>
+
+  <div class="part">Part II — The Appendage</div>
+  <p style="font-size:0.85em; color:#888; font-style:italic;">Material added after the sources. Every entry below is derived register data, not source text. Nothing here revises Part I.</p>
+
+  <div class="app">
+    <span class="app-tag">APPENDIX A</span>
+    <h3>Hebrew Lexicon Register — HEB-S001 to HEB-S018</h3>
+    <p style="font-size:0.85em; color:#aaa;">Eighteen canonical records. Grades: G1 raw term · G2 partial · G3 dual-use attested · G4 interpretation.</p>
+    <table>
+      <tr><th>ID</th><th>Term / Root</th><th>Grade</th><th>Register</th></tr>
+      <tr><td>HEB-S001</td><td>Middah (H4060)</td><td>G3</td><td>Fact</td></tr>
+      <tr><td>HEB-S002</td><td>Moed (H4150)</td><td>G3</td><td>Fact</td></tr>
+      <tr><td>HEB-S003</td><td>Qav (H6957)</td><td>G2</td><td>Fact</td></tr>
+      <tr><td>HEB-S004</td><td>Yovel (H3104) + Middah</td><td>G3</td><td>Fact</td></tr>
+      <tr><td>HEB-S005</td><td>Amah (H520)</td><td>G3</td><td>Fact</td></tr>
+      <tr><td>HEB-S006</td><td>Shana (H8138/H8141)</td><td>G3</td><td>Fact</td></tr>
+      <tr><td>HEB-S007</td><td>Ophan (H212) / Galgal (H1534)</td><td>G3</td><td>Fact</td></tr>
+      <tr><td>HEB-S008</td><td>Chug (H2328)</td><td>G2</td><td>Fact</td></tr>
+      <tr><td>HEB-S009</td><td>Mishkan (H4908)</td><td>G2</td><td>Fact</td></tr>
+      <tr><td>HEB-S010</td><td>Yasad (H3245)</td><td>G2</td><td>Fact</td></tr>
+      <tr><td>HEB-S011</td><td>Amah (H520) — Ark</td><td>G1</td><td>Fact</td></tr>
+      <tr><td>HEB-S012</td><td>Tachtiyyim / Sheniyyim / Shelishiyyim</td><td>G4</td><td>Interpretation</td></tr>
+      <tr><td>HEB-S013</td><td>Tzohar (H6672)</td><td>G1</td><td>Fact</td></tr>
+      <tr><td>HEB-S014</td><td>Levenim / Chemar</td><td>G1</td><td>Fact</td></tr>
+      <tr><td>HEB-S015</td><td>Migdal / Rosh / Shamayim</td><td>G4</td><td>Interpretation</td></tr>
+      <tr><td>HEB-S016</td><td>Mo'adim (H4150)</td><td>G3</td><td>Fact</td></tr>
+      <tr><td>HEB-S017</td><td>Raqia (H7549)</td><td>G1</td><td>Fact</td></tr>
+      <tr><td>HEB-S018</td><td>Kalah (H3615) / Melakah (H4399)</td><td>G4</td><td>Interpretation</td></tr>
+    </table>
+  </div>
+
+  <div class="app">
+    <span class="app-tag">APPENDIX B</span>
+    <h3>Measurement Register</h3>
+    <ul>
+      <li>Common Cubit — 17.5 in</li>
+      <li>Royal / Long Cubit — 20.4 in</li>
+      <li>Handbreadth — 1/7 Royal Cubit (≈2.914 in)</li>
+      <li>Reed — 6 Royal Cubits (122.4 in)</li>
+      <li>1 meter — 39.3701 in</li>
+    </ul>
+    <p style="font-size:0.82em; color:#888; margin-bottom:0;">Engine cross-references: Common Cubit, Royal Cubit, Reed, Handbreadth, Inches, Feet, Meters.</p>
+  </div>
+
+  <div class="app">
+    <span class="app-tag">APPENDIX C</span>
+    <h3>Time Register</h3>
+    <ul>
+      <li>1 Day — 86,400 s</li>
+      <li>1 Week — 604,800 s</li>
+      <li>3.5 Midpoint — 302,400 s</li>
+      <li>1 Biblical Month — 2,592,000 s (30 d)</li>
+      <li>1 Prophetic Year — 31,104,000 s (360 d)</li>
+      <li>1 Solar Year — 31,557,600 s (365.25 d)</li>
+      <li>1 Jubilee — 49 solar years (17,897.25 d / 1,546,322,400 s)</li>
+      <li>120 Jubilees — 5,880 years (185,558,688,000 s) = Mastercore Cap</li>
+    </ul>
+    <p class="resolved"><strong>RESOLVED — TIER 2 (Author ruling).</strong> Jubilee fixed at 49 solar years. 120 Jubilees reconciles to the 5,880-year Mastercore cap with no residual.</p>
+  </div>
+
+  <div class="app">
+    <span class="app-tag">APPENDIX D</span>
+    <h3>Source-Use Protocol</h3>
+    <ul>
+      <li>The Watchtower Society and Jehovah's Witnesses stand first on every subject.</li>
+      <li>Default translation: NWT 1983.</li>
+      <li>Every claim is tiered: 1 Fact, 2 Calculation, 3 Interpretation, 4 Open.</li>
+      <li>Sources are cited, never reproduced, and never edited.</li>
+      <li>Appendix material is derived register only — it carries no authority of its own.</li>
+      <li>Aliases enforced: The Man Born in the Mud, The Mother, The Gauge, Alaska, Madison.</li>
+    </ul>
+  </div>
+
+  <div class="commission">
+    <strong>THE COMMISSION</strong><br>
+    <em>"As you go, preach, saying: 'The kingdom of the heavens has drawn near.'"</em> — Matthew 10:7 (NWT 1983)<br><br>
+    Your King Jesus Christ will be arriving soon.
+  </div>
+
+</div>
+</body>
+</html>
