@@ -11,8 +11,8 @@
   body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
   .container { max-width: 600px; margin: auto; }
   h1 { color: var(--gold); text-align: center; font-size: 1.5em; margin-bottom: 20px; }
-  .tabs { display: flex; gap: 5px; margin-bottom: 20px; }
-  .tab { flex: 1; padding: 10px 2px; text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: #888; font-weight: bold; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.5px; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; }
+  .tab { flex: 1; padding: 10px 1px; text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: #888; font-weight: bold; font-size: 0.66em; text-transform: uppercase; letter-spacing: 0.3px; }
   .tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
   .section { display: none; }
   .section.active { display: block; }
@@ -36,6 +36,15 @@
   .lib-title { color: var(--gold); font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
   .lib-type { font-size: 0.75em; color: var(--cyan); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px;}
   .lib-desc { font-size: 0.9em; color: #ccc; }
+  .srch-group { color: var(--gold); font-size: 0.7em; text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 8px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+  .srch-item { background: #000; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 10px; cursor: pointer; transition: border-color 0.15s; }
+  .srch-item:hover { border-color: var(--gold); }
+  .srch-static { cursor: default; }
+  .srch-static:hover { border-color: var(--border); }
+  .srch-badge { font-family: monospace; font-size: 0.6em; color: var(--gold); background: #1a3350; padding: 2px 6px; border-radius: 4px; letter-spacing: 1px; }
+  .srch-title { color: var(--cyan); font-weight: bold; font-size: 0.88em; margin: 6px 0 3px; }
+  .srch-detail { font-size: 0.8em; color: #bbb; }
+  .srch-empty { text-align: center; color: #888; font-size: 0.88em; padding: 20px 10px; }
 </style>
 </head>
 <body>
@@ -48,6 +57,7 @@
     <div class="tab" onclick="switchTab('time')">Time</div>
     <div class="tab" onclick="switchTab('lexicon')">Lexicon</div>
     <div class="tab" onclick="switchTab('library')">Library</div>
+    <div class="tab" onclick="switchTab('search')">Search</div>
   </div>
 
   <!-- MEASUREMENT ENGINE -->
@@ -128,7 +138,7 @@
       </div>
 
       <div class="lib-item">
-        <div class="lib-title">Insight on the Scriptures (Volumes 1 & 2)</div>
+        <div class="lib-title">Insight on the Scriptures (Volumes 1 &amp; 2)</div>
         <span class="lib-type">Watchtower Publication</span>
         <div class="lib-desc">Used for deep lexical, historical, and theological verification. The source for the Hebrew Lexicon entries and the 24 elders / 144,000 administrative structure.</div>
       </div>
@@ -166,6 +176,15 @@
     </div>
   </div>
 
+  <!-- SEARCH -->
+  <div id="search" class="section">
+    <div class="card">
+      <label>Search the Whole Volume:</label>
+      <input type="text" id="searchInput" placeholder="Lexicon, library, measures, time, Mastercore anchors..." oninput="searchAll()">
+    </div>
+    <div id="searchResults"></div>
+  </div>
+
 </div>
 
 <script>
@@ -176,6 +195,15 @@ function switchTab(id) {
   document.querySelector(`.tab[onclick="switchTab('${id}')"]`).classList.add('active');
 }
 
+function jumpTo(target, term) {
+  if (target === 'lexicon' && term) {
+    document.getElementById('lexSearch').value = term;
+    renderLexicon();
+  }
+  switchTab(target);
+}
+
+/* --- MEASUREMENT LOGIC --- */
 function calcMeasure() {
   const unit = document.getElementById('inputUnit').value;
   const val = parseFloat(document.getElementById('inputMeasure').value) || 0;
@@ -199,6 +227,7 @@ function calcMeasure() {
   document.getElementById('outMeter').innerText = (inches * 0.0254).toFixed(3);
 }
 
+/* --- TIME LOGIC --- */
 function calcTime() {
   const unit = document.getElementById('inputTimeUnit').value;
   const val = parseFloat(document.getElementById('inputTime').value) || 0;
@@ -221,6 +250,7 @@ function calcTime() {
   document.getElementById('outJubilee').innerText = (seconds / (49 * 365.25 * 86400)).toFixed(6);
 }
 
+/* --- HEBREW LEXICON LOGIC --- */
 const hebData = {
   "records": {
     "HEB-S001": {"id": "HEB-S001", "source": "Psalm 39:5; Exodus 26:2", "extract": "Hebrew: Middah (H4060). Physical: Tabernacle curtains. Temporal: 'the measure of my days'", "grade": "G3", "register": "Fact", "notes": "The same noun for architectural dimension is used for the span of a human life."},
@@ -279,9 +309,156 @@ function renderLexicon() {
   });
 }
 
+/* --- SEARCH INDEX --- */
+const libraryIndex = [
+  {title: "New World Translation of the Holy Scriptures (1983)", type: "Primary Text", desc: "The default translation for all scriptural citations and the foundational authority for the Ophan Tutor."},
+  {title: "Insight on the Scriptures (Volumes 1 & 2)", type: "Watchtower Publication", desc: "Used for deep lexical, historical, and theological verification. The source for the Hebrew Lexicon entries and the 24 elders / 144,000 administrative structure."},
+  {title: "Theocratic Ministry School Guidebook", type: "Watchtower Publication", desc: "The source for the teaching methodology. Instructs the speaker to use plain language, avoid haughtiness, and adapt to the audience."},
+  {title: "Learn From the Great Teacher", type: "Watchtower Publication", desc: "The source for the conversational entry protocol. Demonstrates how Jesus used simple illustrations and parables to explain deep truths."},
+  {title: "Life—How Did It Get Here? By Evolution or by Creation?", type: "Watchtower Publication", desc: "The source for the scientific and design arguments. Used when building the Physical Constants Engine (the 864/432 relationship)."},
+  {title: "Revelation—Its Grand Climax At Hand!", type: "Watchtower Publication", desc: "The source for the 24 elders = 144,000 identification, the 24 divisions of 6,000, and the interpretation of the heavenly throne room."},
+  {title: "Strong's Exhaustive Concordance", type: "Reference Tool", desc: "Used for the Hebrew/Greek word numbers (H4060, H4150, H520, etc.) and the foundational lexical definitions in the Lexicon tab."}
+];
+
+const measureIndex = [
+  {name: "Common Cubit", val: "17.5 in"},
+  {name: "Royal / Long Cubit", val: "20.4 in"},
+  {name: "Handbreadth", val: "1/7 Royal Cubit (approx. 2.914 in)"},
+  {name: "Reed", val: "6 Royal Cubits (122.4 in)"},
+  {name: "Inches", val: "0.0254 m"},
+  {name: "Feet", val: "12 in"},
+  {name: "Meters", val: "39.3701 in"}
+];
+
+const timeIndex = [
+  {name: "Second", val: "base unit"},
+  {name: "Minute", val: "60 s"},
+  {name: "Hour", val: "3,600 s"},
+  {name: "Day", val: "86,400 s"},
+  {name: "Week", val: "604,800 s"},
+  {name: "3.5 Midpoint", val: "302,400 s — mirrors the 1,027 B.C.E. center"},
+  {name: "Biblical Month", val: "2,592,000 s (30 d)"},
+  {name: "Prophetic Year", val: "31,104,000 s (360 d)"},
+  {name: "Solar Year", val: "31,557,600 s (365.25 d)"},
+  {name: "Jubilee", val: "49 solar years (17,897.25 d / 1,546,322,400 s)"},
+  {name: "Mastercore Cap", val: "120 Jubilees = 5,880 years (185,558,688,000 s)"}
+];
+
+const anchorIndex = [
+  {term: "5,880-Year Mastercore", detail: "Center: 1,027 B.C.E. · Pivot: 607 B.C.E. · Climax: 1,914 C.E."},
+  {term: "50,000-Year Cap", detail: "7 days of 7,000 years (49,000) + the 50th Thousand (Jubilee)."},
+  {term: "1,260-Month Bridge", detail: "1,914 C.E. to 2,019 C.E. (105 years). Divided into 25, 40, and 40-year segments."},
+  {term: "Edenic Timeline", detail: "Adam created 4,026 B.C.E. · Calendar opens 3,967 B.C.E. (59-year gap) · Adam expelled 3,966 B.C.E. at age 60."},
+  {term: "840-Month Mirror", detail: "Adam waits 70 years (840 months) before having Seth at age 130. Mirrors Terah (70 vs 130)."},
+  {term: "6,044-Year Map", detail: "The Gauge born April 1, 2002. The moon reverses. Birth to the 2018 Event spans 6,040 days."},
+  {term: "20-Year Whiskey Trial", detail: "April 2001 + 10 years + 105 days = July 14, 2011 (Marriage). + 10 years + 105 days = July 14, 2021 (The Mother's 14,400th day)."},
+  {term: "2017-2018 Testing", detail: "Jul 14, 2017 Prison → Dec 19, 2017 Release → Apr 2, 2018 Re-arrest → Jul 1, 2018 Dream → Jul 5, 2018 Anointing → Oct 14, 2018 (14,400th day)."},
+  {term: "5,880 Sections", detail: "49 Strikes × 120 Sections. Status codes: P Pending · W In Progress · E Extracted · V Verified · F Filed · D Delivered · H Hold · X Duplicate."},
+  {term: "3.5 Midpoint", detail: "302,400 seconds — divided exactly at 3.5 days, mirroring the 1,027 B.C.E. center of the Mastercore."},
+  {term: "Jubilee Constant", detail: "1 Jubilee = 49 solar years (17,897.25 d / 1,546,322,400 s). 120 Jubilees = 5,880 years = 185,558,688,000 s."},
+  {term: "The Commission", detail: "Matthew 10:7 (NWT 1983) — 'As you go, preach, saying: \"The kingdom of the heavens has drawn near.\"' Your King Jesus Christ will be arriving soon."}
+];
+
+function searchAll() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const out = document.getElementById('searchResults');
+
+  if (!q) {
+    out.innerHTML = '<div class="card srch-empty">Type to search the whole volume — lexicon, library, measures, time constants, and the Mastercore anchors.</div>';
+    return;
+  }
+
+  let html = '';
+  let total = 0;
+
+  const lex = Object.values(hebData.records).filter(r =>
+    (r.id + ' ' + r.source + ' ' + r.extract + ' ' + r.notes + ' ' + r.register + ' ' + r.grade).toLowerCase().includes(q)
+  );
+  if (lex.length) {
+    total += lex.length;
+    html += `<div class="srch-group">Lexicon — ${lex.length}</div>`;
+    lex.forEach(r => {
+      html += `<div class="srch-item" onclick="jumpTo('lexicon','${r.id}')">
+        <span class="srch-badge">${r.grade}</span>
+        <div class="srch-title">${r.id} — ${r.register}</div>
+        <div class="srch-detail">${r.extract}</div>
+      </div>`;
+    });
+  }
+
+  const lib = libraryIndex.filter(l =>
+    (l.title + ' ' + l.type + ' ' + l.desc).toLowerCase().includes(q)
+  );
+  if (lib.length) {
+    total += lib.length;
+    html += `<div class="srch-group">Library — ${lib.length}</div>`;
+    lib.forEach(l => {
+      html += `<div class="srch-item" onclick="jumpTo('library')">
+        <span class="srch-badge">${l.type}</span>
+        <div class="srch-title">${l.title}</div>
+        <div class="srch-detail">${l.desc}</div>
+      </div>`;
+    });
+  }
+
+  const meas = measureIndex.filter(m =>
+    (m.name + ' ' + m.val).toLowerCase().includes(q)
+  );
+  if (meas.length) {
+    total += meas.length;
+    html += `<div class="srch-group">Measures — ${meas.length}</div>`;
+    meas.forEach(m => {
+      html += `<div class="srch-item" onclick="jumpTo('measure')">
+        <span class="srch-badge">UNIT</span>
+        <div class="srch-title">${m.name}</div>
+        <div class="srch-detail">${m.val}</div>
+      </div>`;
+    });
+  }
+
+  const tim = timeIndex.filter(t =>
+    (t.name + ' ' + t.val).toLowerCase().includes(q)
+  );
+  if (tim.length) {
+    total += tim.length;
+    html += `<div class="srch-group">Time — ${tim.length}</div>`;
+    tim.forEach(t => {
+      html += `<div class="srch-item" onclick="jumpTo('time')">
+        <span class="srch-badge">TIME</span>
+        <div class="srch-title">${t.name}</div>
+        <div class="srch-detail">${t.val}</div>
+      </div>`;
+    });
+  }
+
+  const anc = anchorIndex.filter(a =>
+    (a.term + ' ' + a.detail).toLowerCase().includes(q)
+  );
+  if (anc.length) {
+    total += anc.length;
+    html += `<div class="srch-group">Mastercore Anchors — ${anc.length}</div>`;
+    anc.forEach(a => {
+      html += `<div class="srch-item srch-static">
+        <span class="srch-badge">ANCHOR</span>
+        <div class="srch-title">${a.term}</div>
+        <div class="srch-detail">${a.detail}</div>
+      </div>`;
+    });
+  }
+
+  if (total === 0) {
+    out.innerHTML = `<div class="card srch-empty">No results for "${q}".</div>`;
+    return;
+  }
+
+  html = `<div class="card" style="text-align:center; color:var(--cyan); font-size:0.82em;">${total} result${total === 1 ? '' : 's'}</div>` + html;
+  out.innerHTML = html;
+}
+
 calcMeasure();
 calcTime();
 renderLexicon();
+searchAll();
 </script>
 
 </body>
