@@ -9,12 +9,12 @@
     --bg: #050914; --card: #0a1428; --text: #e8f4f8; --gold: #d4af37; --cyan: #7fdbff; --border: #1a3350;
   }
   body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
-  .container { max-width: 500px; margin: auto; }
+  .container { max-width: 600px; margin: auto; }
   h1 { color: var(--gold); text-align: center; font-size: 1.5em; margin-bottom: 20px; }
   
   /* Tabs */
-  .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-  .tab { flex: 1; padding: 10px; text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: #888; font-weight: bold; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .tab { flex: 1; padding: 10px; text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: #888; font-weight: bold; font-size: 0.85em; }
   .tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
   
   .section { display: none; }
@@ -30,6 +30,16 @@
   .unit-label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
   .result-val { font-size: 1.2em; color: var(--gold); font-weight: bold; margin-top: 4px; }
   
+  /* Hebrew Lexicon Styles */
+  .lex-record { background: #000; border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+  .lex-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+  .lex-id { color: var(--gold); font-weight: bold; font-size: 1.1em; }
+  .lex-grade { background: #1a3350; color: var(--cyan); padding: 2px 8px; border-radius: 12px; font-size: 0.8em; }
+  .lex-source { font-size: 0.85em; color: #aaa; font-style: italic; margin-bottom: 10px; }
+  .lex-extract { font-size: 0.95em; margin-bottom: 10px; }
+  .lex-notes { font-size: 0.85em; color: #7fdbff; background: #0a1428; padding: 10px; border-left: 3px solid var(--cyan); border-radius: 4px; }
+  .lex-register { font-size: 0.75em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; display: block; }
+
   .notes { font-size: 0.85em; color: #aaa; margin-top: 15px; }
   .notes ul { padding-left: 20px; margin-top: 5px; }
 </style>
@@ -40,8 +50,9 @@
   <h1>Ophan Tutor</h1>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('measure')">Measurements</div>
-    <div class="tab" onclick="switchTab('time')">Time Engine</div>
+    <div class="tab active" onclick="switchTab('measure')">Measure</div>
+    <div class="tab" onclick="switchTab('time')">Time</div>
+    <div class="tab" onclick="switchTab('lexicon')">Lexicon</div>
   </div>
 
   <!-- MEASUREMENT ENGINE -->
@@ -94,26 +105,19 @@
         <div class="result-box"><div class="unit-label">Days</div><div class="result-val" id="outDay">1</div></div>
         <div class="result-box"><div class="unit-label">Weeks</div><div class="result-val" id="outWeek">0.14</div></div>
         <div class="result-box"><div class="unit-label">Months (30d)</div><div class="result-val" id="outMonth">0.03</div></div>
-        <div class="result-box highlight"><div class="unit-label">Prophetic Yrs (360d)</div><div class="result-val" id="outPropYear">0.003</div></div>
-        <div class="result-box"><div class="unit-label">Jubilees (49y)</div><div class="result-val" id="outJubilee">0.00006</div></div>
+        <div class="result-box highlight"><div class="unit-label">Prophetic Yrs</div><div class="result-val" id="outPropYear">0.003</div></div>
+        <div class="result-box"><div class="unit-label">Jubilees</div><div class="result-val" id="outJubilee">0.00006</div></div>
       </div>
     </div>
+  </div>
 
-    <!-- Appointed Times -->
-    <div class="card notes">
-      <strong>The Appointed Times (Leviticus 23)</strong>
-      <ul style="margin-top: 10px; font-size: 0.9em; color: #ccc;">
-        <li><b>Weekly Sabbath:</b> 7th day</li>
-        <li><b>Passover:</b> 14th day, 1st month</li>
-        <li><b>Unleavened Bread:</b> 15th-21st day, 1st month</li>
-        <li><b>Firstfruits:</b> Day after Sabbath during Unleavened Bread</li>
-        <li><b>Pentecost (Weeks):</b> 50 days after Firstfruits</li>
-        <li><b>Trumpets:</b> 1st day, 7th month</li>
-        <li><b>Atonement:</b> 10th day, 7th month</li>
-        <li><b>Booths (Tabernacles):</b> 15th-21st day, 7th month</li>
-        <li><b>Eighth-day Assembly:</b> 22nd day, 7th month</li>
-      </ul>
+  <!-- HEBREW LEXICON -->
+  <div id="lexicon" class="section">
+    <div class="card">
+      <label>Search Hebrew Records:</label>
+      <input type="text" id="lexSearch" placeholder="Search by word, Strong's, or ID..." oninput="renderLexicon()">
     </div>
+    <div id="lexiconList"></div>
   </div>
 
 </div>
@@ -154,8 +158,6 @@ function calcMeasure() {
 function calcTime() {
   const unit = document.getElementById('inputTimeUnit').value;
   const val = parseFloat(document.getElementById('inputTime').value) || 0;
-
-  // Convert everything to seconds as base
   let seconds = 0;
   if (unit === 'seconds') seconds = val;
   else if (unit === 'minutes') seconds = val * 60;
@@ -167,7 +169,6 @@ function calcTime() {
   else if (unit === 'years') seconds = val * (365.25 * 86400);
   else if (unit === 'jubilees') seconds = val * (49 * 360 * 86400);
 
-  // Convert from seconds to targets
   document.getElementById('outSec').innerText = seconds.toLocaleString('en-US', {maximumFractionDigits: 0});
   document.getElementById('outDay').innerText = (seconds / 86400).toFixed(2);
   document.getElementById('outWeek').innerText = (seconds / 604800).toFixed(3);
@@ -176,8 +177,69 @@ function calcTime() {
   document.getElementById('outJubilee').innerText = (seconds / (49 * 360 * 86400)).toFixed(6);
 }
 
+/* --- HEBREW LEXICON LOGIC --- */
+const hebData = {
+  "records": {
+    "HEB-S001": {"id": "HEB-S001", "source": "Psalm 39:5; Exodus 26:2", "extract": "Hebrew: Middah (H4060). Physical: Tabernacle curtains. Temporal: 'the measure of my days'", "grade": "G3", "register": "Fact", "notes": "The same noun for architectural dimension is used for the span of a human life."},
+    "HEB-S002": {"id": "HEB-S002", "source": "Exodus 28:43; Leviticus 23:2", "extract": "Hebrew: Moed (H4150). Physical: 'Tent of Meeting'. Temporal: 'appointed times'", "grade": "G3", "register": "Fact", "notes": "The word carries both 'fixed time' and 'fixed place' with 'meeting' as the common denominator."},
+    "HEB-S003": {"id": "HEB-S003", "source": "2 Kings 21:13; Job 38:5", "extract": "Hebrew: Qav (H6957). A measuring line.", "grade": "G2", "register": "Fact", "notes": "Standard architectural surveying term. No explicit temporal usage in this pass."},
+    "HEB-S004": {"id": "HEB-S004", "source": "Ezekiel 40:1-3", "extract": "Hebrew: Yovel (H3104) alongside Keneh ha-Middah (H4060). 'In the Jubilee' + 'measuring rod'.", "grade": "G3", "register": "Fact", "notes": "The 50-year time cycle and the architectural measuring instrument appear in the same verse."},
+    "HEB-S005": {"id": "HEB-S005", "source": "NIV Concordance H520", "extract": "Hebrew: Amah (H520). Cubit. Lexicon adds: 'an unspecified unit of time'.", "grade": "G3", "register": "Fact", "notes": "The cubit is lexically attested as a unit of time in at least one occurrence."},
+    "HEB-S006": {"id": "HEB-S006", "source": "Strong's H8138/H8141", "extract": "Hebrew: Shana. Root: 'to change, repeat'; noun: 'a year (as a revolution)'.", "grade": "G3", "register": "Fact", "notes": "The year is defined as a 'revolution' — a cyclical, wheel-like return."},
+    "HEB-S007": {"id": "HEB-S007", "source": "Ezekiel 1:16; 10:13", "extract": "Hebrew: Ophan (H212) and Galgal (H1534). The wheels of the cherubim chariot.", "grade": "G3", "register": "Fact", "notes": "The wheel is the explicit mechanism of the divine mobile throne, providing the structural analogue for cyclical time."},
+    "HEB-S008": {"id": "HEB-S008", "source": "Isaiah 40:22", "extract": "Hebrew: Chug (H2328). 'He sits enthroned above the circle of the earth.'", "grade": "G2", "register": "Fact", "notes": "A spatial/circular term. No temporal predicate attached."},
+    "HEB-S009": {"id": "HEB-S009", "source": "Exodus 25:9; 40:34-38", "extract": "Hebrew: Mishkan (H4908). The physical 'dwelling place'.", "grade": "G2", "register": "Fact", "notes": "The physical dwelling (mishkan) is distinct from, though coordinated with, the appointed time (moed)."},
+    "HEB-S010": {"id": "HEB-S010", "source": "1 Kings 6:1; Ezra 3:10-11", "extract": "Hebrew: Yasad (H3245). 'To lay a foundation'.", "grade": "G2", "register": "Fact", "notes": "A foundation-laying verb used for the physical house of God."},
+    "HEB-S011": {"id": "HEB-S011", "source": "Genesis 6:15", "extract": "Hebrew: Amah (H520). Ark dimensions: 300 x 50 x 30 cubits.", "grade": "G1", "register": "Fact", "notes": "Building/measurement term present; no explicit temporal predicate in this verse."},
+    "HEB-S012": {"id": "HEB-S012", "source": "Genesis 6:16", "extract": "Hebrew: Tachtiyyim, Sheniyyim, Shelishiyyim (lower, second, third decks).", "grade": "G4", "register": "Interpretation", "notes": "Interpreted as mirroring the three nested zones of later Tabernacle/Temple architecture."},
+    "HEB-S013": {"id": "HEB-S013", "source": "Genesis 6:16", "extract": "Hebrew: Tzohar (H6672). Light opening/window, finished to a cubit.", "grade": "G1", "register": "Fact", "notes": "Architectural feature with linear measurement; no temporal predicate."},
+    "HEB-S014": {"id": "HEB-S014", "source": "Genesis 11:3", "extract": "Hebrew: Levenim (bricks) for Even (stone); Chemar (asphalt) for Chomer (mortar).", "grade": "G1", "register": "Fact", "notes": "Building-material terminology. No temporal predicate."},
+    "HEB-S015": {"id": "HEB-S015", "source": "Genesis 11:4", "extract": "Hebrew: Migdal (tower), Rosh (top/head), Shamayim (heavens).", "grade": "G4", "register": "Interpretation", "notes": "Interpreted as a humanly constructed spatial axis connecting earth to the cosmic realm."},
+    "HEB-S016": {"id": "HEB-S016", "source": "Genesis 1:14", "extract": "Hebrew: Mo'adim (H4150). Celestial bodies appointed 'for signs and for seasons'.", "grade": "G3", "register": "Fact", "notes": "Explicit temporal use of moed. The same root governs the spatial 'Ohel Moed'."},
+    "HEB-S017": {"id": "HEB-S017", "source": "Genesis 1:6-8", "extract": "Hebrew: Raqia (H7549). The expanse/vault separating the waters.", "grade": "G1", "register": "Fact", "notes": "Structural/spatial term for the created vault. No temporal predicate."},
+    "HEB-S018": {"id": "HEB-S018", "source": "Genesis 2:1-3; Exodus 40:33", "extract": "Hebrew: Kalah (H3615) and Melakah (H4399). Creation is 'finished'; Moses 'finished' the work.", "grade": "G4", "register": "Interpretation", "notes": "The verbal parallel is interpreted as framing creation as a temple-building account."}
+  }
+};
+
+function renderLexicon() {
+  const query = document.getElementById('lexSearch').value.toLowerCase();
+  const list = document.getElementById('lexiconList');
+  list.innerHTML = '';
+
+  const records = Object.values(hebData.records);
+  const filtered = records.filter(r => 
+    r.id.toLowerCase().includes(query) || 
+    r.extract.toLowerCase().includes(query) || 
+    r.notes.toLowerCase().includes(query) ||
+    r.source.toLowerCase().includes(query)
+  );
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="card">No records found.</div>';
+    return;
+  }
+
+  filtered.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'lex-record';
+    div.innerHTML = `
+      <div class="lex-header">
+        <span class="lex-id">${r.id}</span>
+        <span class="lex-grade">${r.grade}</span>
+      </div>
+      <div class="lex-source">${r.source}</div>
+      <span class="lex-register">${r.register}</span>
+      <div class="lex-extract">${r.extract}</div>
+      <div class="lex-notes"><strong>Notes:</strong> ${r.notes}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// Initial render
 calcMeasure();
 calcTime();
+renderLexicon();
 </script>
 
 </body>
