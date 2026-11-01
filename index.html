@@ -11,26 +11,19 @@
   body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
   .container { max-width: 600px; margin: auto; }
   h1 { color: var(--gold); text-align: center; font-size: 1.5em; margin-bottom: 20px; }
-  
-  /* Tabs */
   .tabs { display: flex; gap: 5px; margin-bottom: 20px; }
   .tab { flex: 1; padding: 10px 2px; text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: #888; font-weight: bold; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.5px; }
   .tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
-  
   .section { display: none; }
   .section.active { display: block; }
-
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
   label { display: block; margin-bottom: 8px; color: var(--cyan); font-weight: bold; font-size: 0.9em;}
   input, select { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; color: #fff; border: 1px solid var(--border); border-radius: 6px; font-size: 16px; box-sizing: border-box; }
-  
   .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   .result-box { padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 6px; text-align: center; }
   .result-box.highlight { border-color: var(--gold); }
   .unit-label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
   .result-val { font-size: 1.2em; color: var(--gold); font-weight: bold; margin-top: 4px; }
-  
-  /* Hebrew Lexicon Styles */
   .lex-record { background: #000; border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
   .lex-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
   .lex-id { color: var(--gold); font-weight: bold; font-size: 1.1em; }
@@ -39,8 +32,6 @@
   .lex-extract { font-size: 0.95em; margin-bottom: 10px; }
   .lex-notes { font-size: 0.85em; color: #7fdbff; background: #0a1428; padding: 10px; border-left: 3px solid var(--cyan); border-radius: 4px; }
   .lex-register { font-size: 0.75em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; display: block; }
-
-  /* Library Styles */
   .lib-item { background: #000; border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
   .lib-title { color: var(--gold); font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
   .lib-type { font-size: 0.75em; color: var(--cyan); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px;}
@@ -99,7 +90,7 @@
         <option value="months">Biblical Months (30 days)</option>
         <option value="propheticYears">Prophetic Years (360 days)</option>
         <option value="years">Solar Years (365.25 days)</option>
-        <option value="jubilees">Jubilees (49 years)</option>
+        <option value="jubilees">Jubilees (49 Solar Years)</option>
       </select>
       <label>Enter the Value:</label>
       <input type="number" id="inputTime" value="1" step="0.01" oninput="calcTime()">
@@ -185,7 +176,6 @@ function switchTab(id) {
   document.querySelector(`.tab[onclick="switchTab('${id}')"]`).classList.add('active');
 }
 
-/* --- MEASUREMENT LOGIC --- */
 function calcMeasure() {
   const unit = document.getElementById('inputUnit').value;
   const val = parseFloat(document.getElementById('inputMeasure').value) || 0;
@@ -209,7 +199,6 @@ function calcMeasure() {
   document.getElementById('outMeter').innerText = (inches * 0.0254).toFixed(3);
 }
 
-/* --- TIME LOGIC --- */
 function calcTime() {
   const unit = document.getElementById('inputTimeUnit').value;
   const val = parseFloat(document.getElementById('inputTime').value) || 0;
@@ -222,17 +211,16 @@ function calcTime() {
   else if (unit === 'months') seconds = val * (30 * 86400);
   else if (unit === 'propheticYears') seconds = val * (360 * 86400);
   else if (unit === 'years') seconds = val * (365.25 * 86400);
-  else if (unit === 'jubilees') seconds = val * (49 * 360 * 86400);
+  else if (unit === 'jubilees') seconds = val * (49 * 365.25 * 86400);
 
   document.getElementById('outSec').innerText = seconds.toLocaleString('en-US', {maximumFractionDigits: 0});
   document.getElementById('outDay').innerText = (seconds / 86400).toFixed(2);
   document.getElementById('outWeek').innerText = (seconds / 604800).toFixed(3);
   document.getElementById('outMonth').innerText = (seconds / (30 * 86400)).toFixed(2);
   document.getElementById('outPropYear').innerText = (seconds / (360 * 86400)).toFixed(4);
-  document.getElementById('outJubilee').innerText = (seconds / (49 * 360 * 86400)).toFixed(6);
+  document.getElementById('outJubilee').innerText = (seconds / (49 * 365.25 * 86400)).toFixed(6);
 }
 
-/* --- HEBREW LEXICON LOGIC --- */
 const hebData = {
   "records": {
     "HEB-S001": {"id": "HEB-S001", "source": "Psalm 39:5; Exodus 26:2", "extract": "Hebrew: Middah (H4060). Physical: Tabernacle curtains. Temporal: 'the measure of my days'", "grade": "G3", "register": "Fact", "notes": "The same noun for architectural dimension is used for the span of a human life."},
@@ -291,7 +279,6 @@ function renderLexicon() {
   });
 }
 
-// Initial render
 calcMeasure();
 calcTime();
 renderLexicon();
