@@ -22,8 +22,12 @@
   .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   .result-box { padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 6px; text-align: center; }
   .result-box.highlight { border-color: var(--gold); }
+  .result-box.clickable { cursor: pointer; transition: border-color 0.15s, transform 0.1s; }
+  .result-box.clickable:hover { border-color: var(--gold); transform: translateY(-1px); }
+  .result-box.clickable:active { transform: translateY(0); }
   .unit-label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
   .result-val { font-size: 1.2em; color: var(--gold); font-weight: bold; margin-top: 4px; }
+  .tap-hint { text-align: center; color: #557; font-size: 0.72em; letter-spacing: 1px; text-transform: uppercase; margin-top: 12px; }
   .lex-record { background: #000; border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
   .lex-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
   .lex-id { color: var(--gold); font-weight: bold; font-size: 1.1em; }
@@ -45,6 +49,21 @@
   .srch-title { color: var(--cyan); font-weight: bold; font-size: 0.88em; margin: 6px 0 3px; }
   .srch-detail { font-size: 0.8em; color: #bbb; }
   .srch-empty { text-align: center; color: #888; font-size: 0.88em; padding: 20px 10px; }
+
+  /* LESSON OVERLAY */
+  .lesson-overlay { display: none; position: fixed; inset: 0; background: rgba(2,5,14,0.92); z-index: 1000; padding: 16px; overflow-y: auto; }
+  .lesson-overlay.active { display: block; }
+  .lesson-panel { max-width: 540px; margin: 30px auto; background: var(--card); border: 1px solid var(--gold); border-radius: 10px; padding: 22px; position: relative; box-shadow: 0 0 40px rgba(212,175,55,0.15); }
+  .lesson-close { position: absolute; top: 10px; right: 14px; background: none; border: none; color: var(--cyan); font-size: 1.5em; cursor: pointer; line-height: 1; padding: 4px; }
+  .lesson-close:hover { color: var(--gold); }
+  .lesson-kicker { font-family: monospace; font-size: 0.62em; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+  .lesson-title { color: var(--gold); font-size: 1.25em; margin: 4px 0 6px; }
+  .lesson-tier { font-family: monospace; font-size: 0.62em; color: var(--cyan); background: #1a3350; padding: 2px 8px; border-radius: 4px; letter-spacing: 1px; }
+  .lesson-h { color: var(--cyan); font-size: 0.7em; text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+  .lesson-p { font-size: 0.9em; color: #ddd; margin-bottom: 8px; }
+  .lesson-cite { font-size: 0.85em; color: var(--gold); font-style: italic; }
+  .lesson-flag { font-size: 0.82em; color: #ffb347; border-left: 3px solid #ffb347; padding: 8px 10px; background: #1a1208; border-radius: 4px; margin-top: 10px; }
+  .lesson-xref { font-family: monospace; font-size: 0.72em; color: var(--cyan); background: #000; padding: 8px 10px; border-radius: 4px; border: 1px solid var(--border); }
 </style>
 </head>
 <body>
@@ -77,13 +96,14 @@
       <input type="number" id="inputMeasure" value="1" step="0.01" oninput="calcMeasure()">
 
       <div class="result-grid">
-        <div class="result-box highlight"><div class="unit-label">Common Cubits</div><div class="result-val" id="outCommon">1.00</div></div>
-        <div class="result-box highlight"><div class="unit-label">Royal Cubits</div><div class="result-val" id="outRoyal">0.86</div></div>
-        <div class="result-box"><div class="unit-label">Reeds</div><div class="result-val" id="outReed">0.14</div></div>
-        <div class="result-box"><div class="unit-label">Inches</div><div class="result-val" id="outInch">17.50</div></div>
-        <div class="result-box"><div class="unit-label">Feet</div><div class="result-val" id="outFeet">1.46</div></div>
-        <div class="result-box"><div class="unit-label">Meters</div><div class="result-val" id="outMeter">0.445</div></div>
+        <div class="result-box highlight clickable" onclick="openLesson('commonCubit')"><div class="unit-label">Common Cubits</div><div class="result-val" id="outCommon">1.00</div></div>
+        <div class="result-box highlight clickable" onclick="openLesson('royalCubit')"><div class="unit-label">Royal Cubits</div><div class="result-val" id="outRoyal">0.86</div></div>
+        <div class="result-box clickable" onclick="openLesson('reed')"><div class="unit-label">Reeds</div><div class="result-val" id="outReed">0.14</div></div>
+        <div class="result-box clickable" onclick="openLesson('inches')"><div class="unit-label">Inches</div><div class="result-val" id="outInch">17.50</div></div>
+        <div class="result-box clickable" onclick="openLesson('feet')"><div class="unit-label">Feet</div><div class="result-val" id="outFeet">1.46</div></div>
+        <div class="result-box clickable" onclick="openLesson('meters')"><div class="unit-label">Meters</div><div class="result-val" id="outMeter">0.445</div></div>
       </div>
+      <div class="tap-hint">Tap any tile for the lesson</div>
     </div>
   </div>
 
@@ -106,13 +126,14 @@
       <input type="number" id="inputTime" value="1" step="0.01" oninput="calcTime()">
 
       <div class="result-grid">
-        <div class="result-box"><div class="unit-label">Seconds</div><div class="result-val" id="outSec">86,400</div></div>
-        <div class="result-box"><div class="unit-label">Days</div><div class="result-val" id="outDay">1</div></div>
-        <div class="result-box"><div class="unit-label">Weeks</div><div class="result-val" id="outWeek">0.14</div></div>
-        <div class="result-box"><div class="unit-label">Months (30d)</div><div class="result-val" id="outMonth">0.03</div></div>
-        <div class="result-box highlight"><div class="unit-label">Prophetic Yrs</div><div class="result-val" id="outPropYear">0.003</div></div>
-        <div class="result-box"><div class="unit-label">Jubilees</div><div class="result-val" id="outJubilee">0.00006</div></div>
+        <div class="result-box clickable" onclick="openLesson('seconds')"><div class="unit-label">Seconds</div><div class="result-val" id="outSec">86,400</div></div>
+        <div class="result-box clickable" onclick="openLesson('days')"><div class="unit-label">Days</div><div class="result-val" id="outDay">1</div></div>
+        <div class="result-box clickable" onclick="openLesson('weeks')"><div class="unit-label">Weeks</div><div class="result-val" id="outWeek">0.14</div></div>
+        <div class="result-box clickable" onclick="openLesson('months')"><div class="unit-label">Months (30d)</div><div class="result-val" id="outMonth">0.03</div></div>
+        <div class="result-box highlight clickable" onclick="openLesson('propheticYears')"><div class="unit-label">Prophetic Yrs</div><div class="result-val" id="outPropYear">0.003</div></div>
+        <div class="result-box clickable" onclick="openLesson('jubilees')"><div class="unit-label">Jubilees</div><div class="result-val" id="outJubilee">0.00006</div></div>
       </div>
+      <div class="tap-hint">Tap any tile for the lesson</div>
     </div>
   </div>
 
@@ -185,6 +206,14 @@
     <div id="searchResults"></div>
   </div>
 
+</div>
+
+<!-- LESSON OVERLAY -->
+<div class="lesson-overlay" id="lessonOverlay" onclick="if(event.target===this)closeLesson()">
+  <div class="lesson-panel">
+    <button class="lesson-close" onclick="closeLesson()">&times;</button>
+    <div id="lessonBody"></div>
+  </div>
 </div>
 
 <script>
@@ -308,6 +337,159 @@ function renderLexicon() {
     list.appendChild(div);
   });
 }
+
+/* --- LESSONS --- */
+const lessons = {
+  commonCubit: {
+    kicker: "Measurement Lesson",
+    title: "The Common Cubit",
+    tier: "TIER 1 · TIER 3 FLAG",
+    what: "The ordinary cubit — roughly the distance from the elbow to the middle fingertip. Calculated here at 17.5 inches. This is the everyday unit of the sanctuary accounts.",
+    source: "1 Kings 6:2 (NWT 1983): Solomon's temple is given as 60 cubits long, 20 wide, 30 high. The text supplies no qualifier, so the common cubit governs. Insight on the Scriptures discusses the cubit under its weights-and-measures entry.",
+    lesson: "Start with the smallest honest unit. The temple is not described in abstract numbers — it is described in a unit a builder could hold in his arm. The Bible teaches architecture through the body, not through the abstract. When a dimension appears without a qualifier, read it as the common cubit.",
+    flag: "The 17.5-inch figure is a scholarly reconstruction. The text does not state it. Treat the conversion as Tier 2, not Tier 1.",
+    xref: "HEB-S001 Middah (H4060) · HEB-S005 Amah (H520) · HEB-S011 Amah, ark dimensions"
+  },
+  royalCubit: {
+    kicker: "Measurement Lesson",
+    title: "The Royal Cubit",
+    tier: "TIER 1",
+    what: "The long cubit: a common cubit plus a handbreadth. Calculated here at 20.4 inches. The 'cubit and a handbreadth' of Ezekiel's measuring reed.",
+    source: "Ezekiel 40:5 (NWT 1983): the man with the measuring reed — the reed was six cubits, 'with a handbreadth to each cubit.' Insight on the Scriptures treats the royal cubit as the larger standard.",
+    lesson: "Two scales in one. The royal cubit is the common cubit with the handbreadth folded in. This is the pattern of the whole architecture: the small unit is not discarded when the large unit appears — it is embedded inside it. Ezekiel's vision is built on the larger scale, but the smaller scale is still inside it.",
+    flag: null,
+    xref: "HEB-S001 Middah (H4060) · HEB-S005 Amah (H520)"
+  },
+  reed: {
+    kicker: "Measurement Lesson",
+    title: "The Reed",
+    tier: "TIER 1",
+    what: "Six royal cubits — about 122.4 inches, or roughly ten feet. The unit of Ezekiel's temple vision.",
+    source: "Ezekiel 40:5; 42:16-20 (NWT 1983): the temple area measured 500 reeds on each side. Revelation 21:17 gives the wall of the New Jerusalem as 144 cubits.",
+    lesson: "The grandest structure is measured with the largest unit. Ezekiel does not measure the visionary temple in handbreadths — he measures it in reeds. The unit scales with the vision. Notice the number 144 at Revelation 21:17: twelve squared. The architecture teaches through numeric pattern, not only through dimension.",
+    flag: null,
+    xref: "HEB-S001 Middah · HEB-S004 Yovel + measuring rod · HEB-S007 Ophan (wheels)"
+  },
+  inches: {
+    kicker: "Measurement Lesson",
+    title: "Inches",
+    tier: "TIER 2 · TIER 3 FLAG",
+    what: "A modern imperial unit, 1/12 of a foot. Not a biblical unit. Used here only as a conversion bridge so the biblical units can be compared.",
+    source: "No scriptural citation — the inch is post-biblical. The bridge matters only because 1 Kings 6:2 and Ezekiel 40:5 are written in cubits, and the reader thinks in inches.",
+    lesson: "The conversion is a servant, not a teacher. Do not let the modern unit replace the biblical one. Read the text in cubits first; convert afterward. If the arithmetic becomes the message, the architecture has been lost.",
+    flag: "Tier 3: the inch is a modern convention. Using it to 'explain' a biblical text risks importing precision the text never claimed.",
+    xref: "HEB-S005 Amah (H520) · HEB-S001 Middah"
+  },
+  feet: {
+    kicker: "Measurement Lesson",
+    title: "Feet",
+    tier: "TIER 2",
+    what: "Twelve inches. Another modern bridge unit. Useful for scale — a 60-cubit temple is 87.5 feet long at the common cubit.",
+    source: "No direct scriptural citation. The foot as a unit is attested in the ancient world, but the Hebrew text of the temple accounts uses cubits, not feet.",
+    lesson: "Scale is a teaching aid. When you say '87.5 feet,' the listener feels the size of Solomon's temple. That feeling is legitimate — as long as the number in the text is still 60 cubits. The bridge carries you across; it is not the destination.",
+    flag: null,
+    xref: "HEB-S011 Amah, ark · HEB-S009 Mishkan"
+  },
+  meters: {
+    kicker: "Measurement Lesson",
+    title: "Meters",
+    tier: "TIER 2 · TIER 3 FLAG",
+    what: "The metric base unit, 39.3701 inches. Post-biblical and post-imperial. Included for international readers.",
+    source: "No scriptural citation — metric is a modern system. 1 Kings 6:2 remains 60 cubits in the text regardless of the metric equivalent.",
+    lesson: "Every conversion is a translation. The text says cubits; the reader may think meters. The teacher's job is to keep the original word visible while supplying the modern sense. This is the same discipline as NWT 1983 on the Floor: the translation serves the text, it does not replace it.",
+    flag: "Tier 3: metric precision can suggest a measurement the ancient text did not intend.",
+    xref: "HEB-S005 Amah · HEB-S001 Middah"
+  },
+  seconds: {
+    kicker: "Time Lesson",
+    title: "Seconds — the Base Unit",
+    tier: "TIER 1 · TIER 2",
+    what: "The base unit of the Ophan Clock. Every other time unit in this app is built from it: 60 seconds to a minute, 3,600 to an hour, 86,400 to a day.",
+    source: "The second is a modern unit, but the principle is scriptural: Genesis 1:14 (NWT 1983) says the celestial bodies serve 'for signs and for seasons and for days and for years.' Time is measured by appointed markers, not by abstraction.",
+    lesson: "The Ophan Clock begins with the smallest unit and stacks upward. This mirrors the measurement tab: the handbreadth inside the cubit, the cubit inside the reed. The architecture of time and the architecture of space use the same method — a small honest unit, repeated.",
+    flag: null,
+    xref: "HEB-S006 Shana (year as revolution) · HEB-S007 Ophan (wheels) · HEB-S016 Mo'adim"
+  },
+  days: {
+    kicker: "Time Lesson",
+    title: "The Day",
+    tier: "TIER 1",
+    what: "86,400 seconds. The first unit named in the Bible. Marked by the cycle of light and darkness.",
+    source: "Genesis 1:5 (NWT 1983): 'God called the light Day, but the darkness he called Night. And there was evening and there was morning, the first day.' Genesis 8:22 promises that 'day and night will never cease.'",
+    lesson: "The day is the first named unit because it is the first thing a human can observe without instruments. The Bible begins its clock with what the eye can see. Every larger unit — week, month, year, Jubilee — is built by gathering days.",
+    flag: null,
+    xref: "HEB-S016 Mo'adim · HEB-S006 Shana"
+  },
+  weeks: {
+    kicker: "Time Lesson",
+    title: "The Week",
+    tier: "TIER 1 · TIER 3",
+    what: "Seven days. 604,800 seconds. The only time unit in the Bible with no astronomical anchor — no moon phase, no solar cycle.",
+    source: "Genesis 2:2-3 (NWT 1983): God rested on the seventh day and blessed it. Exodus 20:8-11 grounds the Sabbath command in the six-day creation and the seventh-day rest.",
+    lesson: "The week is a revealed unit, not a discovered one. Every other unit can be read off the sky; the week cannot. It is a marker of God's own rhythm, given to man. That is why the week survives across cultures that share no calendar — it is not a natural cycle, it is an appointed one.",
+    flag: "Tier 3: some cultures used market cycles rather than seven-day weeks. The biblical week is distinctive and is presented as divinely appointed, not universally natural.",
+    xref: "HEB-S002 Moed · HEB-S016 Mo'adim"
+  },
+  months: {
+    kicker: "Time Lesson",
+    title: "Biblical Months (30 days)",
+    tier: "TIER 1 · TIER 2",
+    what: "Thirty days. 2,592,000 seconds. The month used throughout the prophetic arithmetic of Scripture.",
+    source: "Genesis 7:11 and 8:3-4 (NWT 1983): the flood begins on the 17th day of the second month and the ark rests on the 17th day of the seventh month — five months. Genesis 7:24 gives the same span as 150 days. 150 ÷ 5 = 30 days per month.",
+    lesson: "The arithmetic is supplied by the text itself, not by us. This is a Tier 2 calculation built from two Tier 1 verses. When you see 42 months in Revelation, the 30-day month is what turns it into 1,260 days. The Bible gives you the key; you do not bring it.",
+    flag: null,
+    xref: "HEB-S006 Shana · HEB-S016 Mo'adim"
+  },
+  propheticYears: {
+    kicker: "Time Lesson",
+    title: "The Prophetic Year (360 days)",
+    tier: "TIER 1 · TIER 2",
+    what: "Twelve 30-day months — 360 days, 31,104,000 seconds. The year used in prophetic arithmetic.",
+    source: "Revelation 11:2-3 (NWT 1983): 42 months and 1,260 days are set side by side. 1,260 ÷ 42 = 30 days per month, so 12 × 30 = 360 days per year. Daniel 9:24 gives 70 weeks; Numbers 14:34 and Ezekiel 4:6 give the principle 'a day for a year.'",
+    lesson: "The 360-day year is not assumed — it is derived. Revelation 11:2-3 supplies the ratio. Once you have it, Daniel's 70 weeks and the 1,260 days of Revelation open up. This is the difference between reading prophecy and guessing at it: the Bible gives its own exchange rate, and you apply it.",
+    flag: null,
+    xref: "HEB-S006 Shana · HEB-S016 Mo'adim · HEB-S001 Middah (measure of days)"
+  },
+  jubilees: {
+    kicker: "Time Lesson",
+    title: "The Jubilee",
+    tier: "TIER 1 · TIER 3 FLAG",
+    what: "Forty-nine solar years — 17,897.25 days, 1,546,322,400 seconds. The Mastercore cap is 120 Jubilees: 5,880 years.",
+    source: "Leviticus 25:8-10 (NWT 1983): 'You must count seven sabbaths of years, seven times seven years, and the days of the seven sabbaths of years will be 49 years... You must sanctify the fiftieth year.'",
+    lesson: "The cycle is 49; the Jubilee year is the 50th. Two numbers, two different roles. The Mastercore uses the 49-year cycle: 120 × 49 = 5,880. This matches Section C of the Vault Set. The arithmetic is honest only if you say which number you are using — the cycle or the year.",
+    flag: "Tier 3: if the Jubilee is counted as a 50-year cycle, 120 cycles give 6,000 years, not 5,880. The Mastercore explicitly uses the 49-year cycle. That choice must be stated whenever the 5,880 figure is used.",
+    xref: "HEB-S004 Yovel (H3104) · HEB-S006 Shana · HEB-S001 Middah"
+  }
+};
+
+function openLesson(key) {
+  const l = lessons[key];
+  if (!l) return;
+  const body = document.getElementById('lessonBody');
+  body.innerHTML = `
+    <div class="lesson-kicker">${l.kicker}</div>
+    <div class="lesson-title">${l.title}</div>
+    <span class="lesson-tier">${l.tier}</span>
+    <div class="lesson-h">What It Is</div>
+    <div class="lesson-p">${l.what}</div>
+    <div class="lesson-h">From the Source</div>
+    <div class="lesson-p lesson-cite">${l.source}</div>
+    <div class="lesson-h">The Lesson</div>
+    <div class="lesson-p">${l.lesson}</div>
+    ${l.flag ? `<div class="lesson-flag"><strong>Flag:</strong> ${l.flag}</div>` : ''}
+    <div class="lesson-h">Cross-References</div>
+    <div class="lesson-xref">${l.xref}</div>
+  `;
+  document.getElementById('lessonOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLesson() {
+  document.getElementById('lessonOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLesson(); });
 
 /* --- SEARCH INDEX --- */
 const libraryIndex = [
