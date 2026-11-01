@@ -3,89 +3,133 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Ophan Tutor — Measurement Engine</title>
+<title>The Ophan Tutor — Architecture of Time</title>
 <style>
   :root {
     --bg: #050914; --card: #0a1428; --text: #e8f4f8; --gold: #d4af37; --cyan: #7fdbff; --border: #1a3350;
   }
   body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
   .container { max-width: 500px; margin: auto; }
-  h1 { color: var(--gold); text-align: center; font-size: 1.5em; }
+  h1 { color: var(--gold); text-align: center; font-size: 1.5em; margin-bottom: 20px; }
+  
+  /* Tabs */
+  .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+  .tab { flex: 1; padding: 10px; text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: #888; font-weight: bold; }
+  .tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
+  
+  .section { display: none; }
+  .section.active { display: block; }
+
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
   label { display: block; margin-bottom: 8px; color: var(--cyan); font-weight: bold; font-size: 0.9em;}
   input, select { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; color: #fff; border: 1px solid var(--border); border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+  
   .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
   .result-box { padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 6px; text-align: center; }
   .result-box.highlight { border-color: var(--gold); }
   .unit-label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
   .result-val { font-size: 1.2em; color: var(--gold); font-weight: bold; margin-top: 4px; }
+  
   .notes { font-size: 0.85em; color: #aaa; margin-top: 15px; }
+  .notes ul { padding-left: 20px; margin-top: 5px; }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>Ophan Tutor: Measurements</h1>
+  <h1>Ophan Tutor</h1>
 
-  <div class="card">
-    <label>Select the Unit You Are Entering:</label>
-    <select id="inputUnit" onchange="calculate()">
-      <option value="commonCubit">Common Cubit (17.5 in)</option>
-      <option value="royalCubit">Royal/Long Cubit (20.4 in)</option>
-      <option value="reed">Reed (6 Royal Cubits)</option>
-      <option value="handbreadth">Handbreadth (1/7 Royal Cubit)</option>
-      <option value="inches">Inches</option>
-      <option value="feet">Feet</option>
-      <option value="meters">Meters</option>
-    </select>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('measure')">Measurements</div>
+    <div class="tab" onclick="switchTab('time')">Time Engine</div>
+  </div>
 
-    <label>Enter the Value:</label>
-    <input type="number" id="inputValue" value="1" step="0.01" oninput="calculate()">
+  <!-- MEASUREMENT ENGINE -->
+  <div id="measure" class="section active">
+    <div class="card">
+      <label>Select the Unit You Are Entering:</label>
+      <select id="inputUnit" onchange="calcMeasure()">
+        <option value="commonCubit">Common Cubit (17.5 in)</option>
+        <option value="royalCubit">Royal/Long Cubit (20.4 in)</option>
+        <option value="reed">Reed (6 Royal Cubits)</option>
+        <option value="handbreadth">Handbreadth (1/7 Royal Cubit)</option>
+        <option value="inches">Inches</option>
+        <option value="feet">Feet</option>
+        <option value="meters">Meters</option>
+      </select>
+      <label>Enter the Value:</label>
+      <input type="number" id="inputMeasure" value="1" step="0.01" oninput="calcMeasure()">
 
-    <div class="result-grid">
-      <div class="result-box highlight">
-        <div class="unit-label">Common Cubits</div>
-        <div class="result-val" id="outCommon">1.00</div>
-      </div>
-      <div class="result-box highlight">
-        <div class="unit-label">Royal Cubits</div>
-        <div class="result-val" id="outRoyal">0.86</div>
-      </div>
-      <div class="result-box">
-        <div class="unit-label">Reeds (Ezekiel)</div>
-        <div class="result-val" id="outReed">0.14</div>
-      </div>
-      <div class="result-box">
-        <div class="unit-label">Inches</div>
-        <div class="result-val" id="outInch">17.50</div>
-      </div>
-      <div class="result-box">
-        <div class="unit-label">Feet</div>
-        <div class="result-val" id="outFeet">1.46</div>
-      </div>
-      <div class="result-box">
-        <div class="unit-label">Meters</div>
-        <div class="result-val" id="outMeter">0.445</div>
+      <div class="result-grid">
+        <div class="result-box highlight"><div class="unit-label">Common Cubits</div><div class="result-val" id="outCommon">1.00</div></div>
+        <div class="result-box highlight"><div class="unit-label">Royal Cubits</div><div class="result-val" id="outRoyal">0.86</div></div>
+        <div class="result-box"><div class="unit-label">Reeds</div><div class="result-val" id="outReed">0.14</div></div>
+        <div class="result-box"><div class="unit-label">Inches</div><div class="result-val" id="outInch">17.50</div></div>
+        <div class="result-box"><div class="unit-label">Feet</div><div class="result-val" id="outFeet">1.46</div></div>
+        <div class="result-box"><div class="unit-label">Meters</div><div class="result-val" id="outMeter">0.445</div></div>
       </div>
     </div>
   </div>
 
-  <div class="card notes">
-    <strong>Calculation Notes:</strong>
-    <ul>
-      <li><strong>Common Cubit:</strong> 17.5 inches (44.5 cm). Used in Noah's Ark and the Tabernacle.</li>
-      <li><strong>Royal Cubit:</strong> 20.4 inches (51.8 cm). Used in Solomon's Temple and Ezekiel's vision.</li>
-      <li><strong>Reed:</strong> 6 Royal Cubits (approx. 10.2 feet or 3.1 meters). Used in Ezekiel 40-48.</li>
-    </ul>
+  <!-- TIME ENGINE -->
+  <div id="time" class="section">
+    <div class="card">
+      <label>Select the Time Unit:</label>
+      <select id="inputTimeUnit" onchange="calcTime()">
+        <option value="seconds">Seconds</option>
+        <option value="minutes">Minutes</option>
+        <option value="hours">Hours</option>
+        <option value="days">Days</option>
+        <option value="weeks">Weeks</option>
+        <option value="months">Biblical Months (30 days)</option>
+        <option value="propheticYears">Prophetic Years (360 days)</option>
+        <option value="years">Solar Years (365.25 days)</option>
+        <option value="jubilees">Jubilees (49 years)</option>
+      </select>
+      <label>Enter the Value:</label>
+      <input type="number" id="inputTime" value="1" step="0.01" oninput="calcTime()">
+
+      <div class="result-grid">
+        <div class="result-box"><div class="unit-label">Seconds</div><div class="result-val" id="outSec">86,400</div></div>
+        <div class="result-box"><div class="unit-label">Days</div><div class="result-val" id="outDay">1</div></div>
+        <div class="result-box"><div class="unit-label">Weeks</div><div class="result-val" id="outWeek">0.14</div></div>
+        <div class="result-box"><div class="unit-label">Months (30d)</div><div class="result-val" id="outMonth">0.03</div></div>
+        <div class="result-box highlight"><div class="unit-label">Prophetic Yrs (360d)</div><div class="result-val" id="outPropYear">0.003</div></div>
+        <div class="result-box"><div class="unit-label">Jubilees (49y)</div><div class="result-val" id="outJubilee">0.00006</div></div>
+      </div>
+    </div>
+
+    <!-- Appointed Times -->
+    <div class="card notes">
+      <strong>The Appointed Times (Leviticus 23)</strong>
+      <ul style="margin-top: 10px; font-size: 0.9em; color: #ccc;">
+        <li><b>Weekly Sabbath:</b> 7th day</li>
+        <li><b>Passover:</b> 14th day, 1st month</li>
+        <li><b>Unleavened Bread:</b> 15th-21st day, 1st month</li>
+        <li><b>Firstfruits:</b> Day after Sabbath during Unleavened Bread</li>
+        <li><b>Pentecost (Weeks):</b> 50 days after Firstfruits</li>
+        <li><b>Trumpets:</b> 1st day, 7th month</li>
+        <li><b>Atonement:</b> 10th day, 7th month</li>
+        <li><b>Booths (Tabernacles):</b> 15th-21st day, 7th month</li>
+        <li><b>Eighth-day Assembly:</b> 22nd day, 7th month</li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
 <script>
-function calculate() {
+function switchTab(id) {
+  document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector(`.tab[onclick="switchTab('${id}')"]`).classList.add('active');
+}
+
+/* --- MEASUREMENT LOGIC --- */
+function calcMeasure() {
   const unit = document.getElementById('inputUnit').value;
-  const val = parseFloat(document.getElementById('inputValue').value) || 0;
-  
-  // Base conversion to inches
+  const val = parseFloat(document.getElementById('inputMeasure').value) || 0;
   let inches = 0;
   const commonCubitIn = 17.5;
   const royalCubitIn = 20.4;
@@ -98,24 +142,42 @@ function calculate() {
   else if (unit === 'feet') inches = val * 12;
   else if (unit === 'meters') inches = val / 0.0254;
 
-  // Conversions from inches
-  const commonCubits = inches / commonCubitIn;
-  const royalCubits = inches / royalCubitIn;
-  const reeds = inches / (royalCubitIn * 6);
-  const feet = inches / 12;
-  const meters = inches * 0.0254;
-
-  // Update UI
-  document.getElementById('outCommon').innerText = commonCubits.toFixed(2);
-  document.getElementById('outRoyal').innerText = royalCubits.toFixed(2);
-  document.getElementById('outReed').innerText = reeds.toFixed(3);
+  document.getElementById('outCommon').innerText = (inches / commonCubitIn).toFixed(2);
+  document.getElementById('outRoyal').innerText = (inches / royalCubitIn).toFixed(2);
+  document.getElementById('outReed').innerText = (inches / (royalCubitIn * 6)).toFixed(3);
   document.getElementById('outInch').innerText = inches.toFixed(2);
-  document.getElementById('outFeet').innerText = feet.toFixed(2);
-  document.getElementById('outMeter').innerText = meters.toFixed(3);
+  document.getElementById('outFeet').innerText = (inches / 12).toFixed(2);
+  document.getElementById('outMeter').innerText = (inches * 0.0254).toFixed(3);
 }
 
-// Run on page load
-calculate();
+/* --- TIME LOGIC --- */
+function calcTime() {
+  const unit = document.getElementById('inputTimeUnit').value;
+  const val = parseFloat(document.getElementById('inputTime').value) || 0;
+
+  // Convert everything to seconds as base
+  let seconds = 0;
+  if (unit === 'seconds') seconds = val;
+  else if (unit === 'minutes') seconds = val * 60;
+  else if (unit === 'hours') seconds = val * 3600;
+  else if (unit === 'days') seconds = val * 86400;
+  else if (unit === 'weeks') seconds = val * 604800;
+  else if (unit === 'months') seconds = val * (30 * 86400);
+  else if (unit === 'propheticYears') seconds = val * (360 * 86400);
+  else if (unit === 'years') seconds = val * (365.25 * 86400);
+  else if (unit === 'jubilees') seconds = val * (49 * 360 * 86400);
+
+  // Convert from seconds to targets
+  document.getElementById('outSec').innerText = seconds.toLocaleString('en-US', {maximumFractionDigits: 0});
+  document.getElementById('outDay').innerText = (seconds / 86400).toFixed(2);
+  document.getElementById('outWeek').innerText = (seconds / 604800).toFixed(3);
+  document.getElementById('outMonth').innerText = (seconds / (30 * 86400)).toFixed(2);
+  document.getElementById('outPropYear').innerText = (seconds / (360 * 86400)).toFixed(4);
+  document.getElementById('outJubilee').innerText = (seconds / (49 * 360 * 86400)).toFixed(6);
+}
+
+calcMeasure();
+calcTime();
 </script>
 
 </body>
